@@ -1,3 +1,5 @@
+-c common_constraints.txt
+
 # Newer versions introduce a dependency on charset-normalizer which only supports python 3.6 and above.
 requests==2.25.1
 

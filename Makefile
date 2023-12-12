@@ -48,7 +48,13 @@ reset-virtualenv:
 reset-virtualenv-py3:
 	bash -c 'virtualenv --clear --python=$$(which python3) ${ANALYTICS_PIPELINE_VENV}/analytics_pipeline'
 
-upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
+COMMON_CONSTRAINTS_TXT=requirements/common_constraints.txt
+.PHONY: $(COMMON_CONSTRAINTS_TXT)
+$(COMMON_CONSTRAINTS_TXT):
+	wget -O "$(@)" https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt || touch "$(@)"
+
+upgrade: $(COMMON_CONSTRAINTS_TXT)
+	## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
 	pip install -qr requirements/pip-tools.txt
 	CUSTOM_COMPILE_COMMAND="make upgrade" pip-compile --upgrade -o requirements/pip-tools.txt requirements/pip-tools.in
 	CUSTOM_COMPILE_COMMAND="make upgrade" pip-compile --upgrade -o requirements/base.txt requirements/base.in
