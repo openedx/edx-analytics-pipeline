@@ -1,3 +1,4 @@
 include tox.ini
 include requirements/*.txt
 include default.cfg
+include requirements/constraints.txt
